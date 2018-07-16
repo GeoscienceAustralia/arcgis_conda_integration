@@ -53,24 +53,25 @@ PACKAGE_CHECK_ACTION = 'warn' # Can be 'ignore', 'warn' or 'abort'
 # Root directory of ArcGIS Python installation
 ARCGIS_DESKTOP_PYTHON_ROOT = 'C:\\Python27' 
 
-# Default Conda prefixes (absolute or relative to default envs dir) for Python version and bits
-# N.B: Can also set CONDA_PREFIX environment variable outside conda
-CONDA_DEFAULT_PREFIXES = {(2, 32): 'C:\\anaconda2_32bit\\envs\\_arc105_32bit',
-                          (3, 64): 'arcgispro-py3'
+# Anaconda configuration by Python version and bit width
+CONDA_CONFIG = {(2, 32): {'installation_root': 'C:\\Users\\%USERNAME%\\AppData\\Local\\Continuum\\Anaconda2',
+                          'default_environment': 'arc105_32bit',
+                          'required_package_versions': {'python': '2.7.12',
+                                                        'numpy': '1.11.2',
+                                                        'matplotlib': '1.5.3',
+                                                        'scipy': '0.17.0'
+                                                        }
+                          },
+                (3, 64): {'installation_root': 'C:\\Users\\%USERNAME%\\AppData\\Local\\Continuum\\Anaconda3',
+                          'default_environment': 'arcgispro-py3',
+                          'required_package_versions': {'python': '3.6.6',
+                                                        'numpy': '1.13.3',
+                                                        'matplotlib': '2.0.2',
+                                                        'scipy': '0.19.1'
+                                                        }
                           }
+                }
 
-# Define optional package version constraints for each Python version
-PACKAGE_VERSION_CONSTRAINTS = {(2, 32): {'python': '2.7.12',
-                                         'numpy': '1.11.2',
-                                         'matplotlib': '1.5.3',
-                                         'scipy': '0.17.0'
-                                         },
-                               (3, 64): {'python': '3.6.6',
-                                         'numpy': '1.13.3',
-                                         'matplotlib': '2.0.2',
-                                         'scipy': '0.19.1'
-                                         }
-                               }
 #===========================================================================
 
 logger = logging.getLogger(__name__) # Get __main__ logger
@@ -145,15 +146,15 @@ def usercustomise():
         '''
         assert action in ['ignore', 'warn', 'abort'], 'Invalid action: "{}"'.format(action)
         
-        package_version_constraints = PACKAGE_VERSION_CONSTRAINTS.get((python_major_version, python_bits))
-        if package_version_constraints:
-            for package_name, required_version in package_version_constraints.items():
+        required_package_versions = CONDA_CONFIG[(python_major_version, python_bits)]['required_package_versions']
+        if required_package_versions:
+            for package_name, required_version in required_package_versions.items():
                 actual_version = ('.'.join([str(version) for version in sys.version_info[0:3]]) 
                                   if package_name == 'python'
                                   else pkg_resources.get_distribution(package_name).version
                                   )
                 if actual_version != required_version:
-                    message = '{} must be version {} for {}. Found {}'.format(package_name, 
+                    message = '{} should be version {} for {}. Found {}'.format(package_name, 
                                                                               required_version, 
                                                                               arcgis_name,
                                                                               actual_version)
@@ -165,17 +166,19 @@ def usercustomise():
                         logger.debug('DEBUG: {}'.format(message))
     
     
-    def get_conda_default_prefix(arcgis_python_dir):
+    def get_conda_default_prefix(python_major_version, python_bits, username):
         '''
         Function to return conda_default_prefix for non-ArcGIS invocations
         '''
         conda_default_prefix = (os.environ.get('CONDA_DEFAULT_PREFIX') # N.B: This is NOT as standard Conda variable
-                                or CONDA_DEFAULT_PREFIXES.get((python_major_version, python_bits)) 
+                                or CONDA_CONFIG[(python_major_version, python_bits)]['default_environment']
                                 )
         if conda_default_prefix: 
             if not '\\' in conda_default_prefix: # Relative to envs in ArcGIS Pro Conda installation - make absolute
-                conda_default_prefix = os.path.join(arcgis_python_dir, 'envs', conda_default_prefix)
-                
+                conda_default_prefix = os.path.join(CONDA_CONFIG[(python_major_version, python_bits)]['installation_root'], 
+                                                    'envs', 
+                                                    conda_default_prefix).replace('%USERNAME%', username)
+
         return conda_default_prefix
     #===========================================================================
     # # Sample Conda environment variable values
@@ -188,6 +191,8 @@ def usercustomise():
     #  'CONDA_PYTHON_EXE': 'C:\\anaconda2_32bit\\python.exe',
     #===========================================================================
 
+    username = os.environ.get('USERNAME')
+    
     # Check version of Python
     python_major_version = sys.version_info[0] # 2 or 3
     logger.debug('python_major_version: {}'.format(python_major_version))
@@ -198,7 +203,7 @@ def usercustomise():
     CONDA_PREFIX = os.environ.get('CONDA_PREFIX')
     
     if python_major_version == 2: # Python 2.X - assume ArcGIS Desktop
-        arcgis_name = 'ArcGIS Desktop'
+        arcgis_name = 'ArcGIS Desktop 10.5'
         
         arcgis_install_dir = os.environ["AGSDESKTOPJAVA"]
         try:
@@ -223,7 +228,7 @@ def usercustomise():
         is_arcgis_python = sys.executable.lower().startswith(arcgis_python_dir.lower())
         is_arcgis_pro = False # ArcGIS Desktop .pth file is a list of paths which must NOT be executed
         
-        conda_default_prefix = get_conda_default_prefix(arcgis_python_dir)
+        conda_default_prefix = get_conda_default_prefix(python_major_version, python_bits, username)
            
     elif python_major_version == 3: # Python 3.X - assume ArcGIS Pro
         arcgis_name = 'ArcGIS Pro'
@@ -247,7 +252,7 @@ def usercustomise():
         is_arcgis_python = sys.executable.lower().startswith(arcgis_python_dir.lower())
         is_arcgis_pro = True # ArcGIS Pro .pth file is a Python file which must be executed
         
-        conda_default_prefix = get_conda_default_prefix(arcgis_python_dir)
+        conda_default_prefix = get_conda_default_prefix(python_major_version, python_bits, username)
                 
         if is_arcgis_python: # ArcGIS invocation - use actual Conda prefix
             pth_file_path = os.path.join(CONDA_PREFIX, "Lib\\site-packages\\ArcGISPro.pth")
@@ -270,8 +275,8 @@ def usercustomise():
         
         logger.info('Conda Python customised with libs from {}'.format(arcgis_name))
         
-    # ArcGIS (Desktop) non-Conda invocation - append default Conda lib
-    elif is_arcgis_python and not CONDA_PREFIX: 
+    # ArcGIS non-Conda invocation - append default Conda lib
+    elif is_arcgis_python: # ArcGIS Desktop (non-Conda) invocation - append default Conda lib
         conda_site_packages_dir = os.path.join(conda_default_prefix, "Lib\\site-packages")
         logger.debug('conda_site_packages_dir: {}'.format(conda_site_packages_dir))
         if not os.path.isdir(conda_site_packages_dir):
