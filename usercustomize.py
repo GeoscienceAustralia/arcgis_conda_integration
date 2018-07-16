@@ -53,6 +53,9 @@ PACKAGE_CHECK_ACTION = 'warn' # Can be 'ignore', 'warn' or 'abort'
 # Root directory of ArcGIS Python installation
 ARCGIS_DESKTOP_PYTHON_ROOT = 'C:\\Python27' 
 
+# Default environment prefix for ArcGIS Pro
+ARCGIS_PRO_DEFAULT_ENVIRONMENT = 'arcgispro-py3' 
+
 # Anaconda configuration by Python version and bit width
 CONDA_CONFIG = {(2, 32): {'installation_root': 'C:\\Users\\%USERNAME%\\AppData\\Local\\Continuum\\Anaconda2',
                           'default_environment': 'arc105_32bit',
@@ -241,6 +244,7 @@ def usercustomise():
         
         try:
             arcgis_install_dir = get_arcgis_pro_path()
+            logger.debug('arcgis_install_dir: {}'.format(arcgis_install_dir))
         except:
             raise BaseException('Unable to determine installation directory for {}'.format(arcgis_name))
         
@@ -252,7 +256,10 @@ def usercustomise():
         is_arcgis_python = sys.executable.lower().startswith(arcgis_python_dir.lower())
         is_arcgis_pro = True # ArcGIS Pro .pth file is a Python file which must be executed
         
-        conda_default_prefix = get_conda_default_prefix(python_major_version, python_bits, username)
+        conda_default_prefix = os.path.join(arcgis_python_dir,
+                                            'envs',
+                                            ARCGIS_PRO_DEFAULT_ENVIRONMENT
+                                            )
                 
         if is_arcgis_python: # ArcGIS invocation - use actual Conda prefix
             pth_file_path = os.path.join(CONDA_PREFIX, "Lib\\site-packages\\ArcGISPro.pth")
