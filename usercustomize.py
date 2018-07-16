@@ -138,12 +138,12 @@ def usercustomise():
             except BaseException as e:
                 logger.error("could not read and append paths from {}: {}".format(pth_file_path, e.message))
             
-    def check_package_versions(action='warn'):
+    def check_package_versions(arcgis_name='ArcGIS', action='warn'):
         '''
         Function to check if packages aren't as expected for Conda Python version to 
         match corresponding ArcGIS Python packages
         '''
-        assert action in ['ignore', 'warn', 'abort'], 'Invalid action'
+        assert action in ['ignore', 'warn', 'abort'], 'Invalid action: "{}"'.format(action)
         
         package_version_constraints = PACKAGE_VERSION_CONSTRAINTS.get((python_major_version, python_bits))
         if package_version_constraints:
@@ -153,12 +153,15 @@ def usercustomise():
                                   else pkg_resources.get_distribution(package_name).version
                                   )
                 if actual_version != required_version:
-                    message = '{} must be version {} for ArcPy. Found {}'.format(package_name, required_version, actual_version)
+                    message = '{} must be version {} for {}. Found {}'.format(package_name, 
+                                                                              required_version, 
+                                                                              arcgis_name,
+                                                                              actual_version)
                     if action == 'warn':
                         logger.warning('WARNING: {}'.format(message))
                     elif action == 'abort':
                         raise BaseException(message)
-                    else:
+                    else: # action == 'ignore'
                         logger.debug('DEBUG: {}'.format(message))
     
     
@@ -263,7 +266,7 @@ def usercustomise():
     # Non-ArcGIS Conda invocation - append ArcGIS libs
     if CONDA_PREFIX and not is_arcgis_python: 
         set_sys_paths(pth_file_path, is_arcgis_pro)
-        check_package_versions(PACKAGE_CHECK_ACTION) # Only check Conda invocations. ArcGIS ones should be OK
+        check_package_versions(arcgis_name, PACKAGE_CHECK_ACTION) # Only check Conda invocations. ArcGIS ones should be OK
         
         logger.info('Conda Python customised with libs from {}'.format(arcgis_name))
         

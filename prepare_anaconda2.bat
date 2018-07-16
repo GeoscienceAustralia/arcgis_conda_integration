@@ -58,4 +58,4 @@
     mkdir C:\Users\%username%\AppData\Roaming\Python\Python27
     mkdir C:\Users\%username%\AppData\Roaming\Python\Python27\site-packages
 
-    cp usercustomise.py C:\Users\%username%\AppData\Roaming\Python\Python27\site-packages
+    cp usercustomize.py C:\Users\%username%\AppData\Roaming\Python\Python27\site-packages
