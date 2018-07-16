@@ -24,8 +24,9 @@ Startup script to link Anaconda python environment with ArcGIS
 This script will modify the search path by appending ArcGIS libraries to Anaconda ones for
 Anaconda Python, or the Anaconda libraries to the ArcGIS ones for ArcGIS Python
  
-Functionality based on original usercustomize.py script by from Curtis Price, cprice@usgs.gov
-This script was re-written Alex Ip based on an augmented version by Duncan Moore.
+Functionality based on original usercustomize.py script by Curtis Price of USGS (cprice@usgs.gov)
+This script was re-written by Alex Ip of Geoscience Australia, based on an augmented version by 
+Duncan Moore, also of GA.
 It is intended to allow users to use ArcPy with multiple, arbitrary Conda environments
 Note that only the 32-bit ArcMap 10.5 and 64-bit ArcGIS Pro integrations have been actively tested.
 '''
