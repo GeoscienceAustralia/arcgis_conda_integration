@@ -35,7 +35,7 @@ Please see https://conda.io/docs/user-guide/configuration/use-condarc.html#confi
 
 To use the ArcGIS-compatible virtual environment, you can use the versions of Spyder and/or Jupyter installed in the virtual environment by using the shortcuts in the start menu. Alternatively, you can start the "Anaconda Prompt" for the relevant Python, and then type "activate arc105_32bit" for ArcMap 105 / Python 2.7, or "activate arcgispro-py3" for ArcGIS Pro / Python 3.6. You can then start Python, Jupyter or anything else in the virtual environment from that command prompt.
 
-# Creating your own Virtual Environments / Recovery
+# Creating your own Conda Virtual Environments / Recovery
 Should you wish to test different versions of packages, it is possible to clone the virtual environment as follows:
 
 For ArcMap 105 / Python 2.7:
@@ -45,6 +45,8 @@ For ArcGIS Pro / Python 3.6:
 
 	conda create --name myclone --clone arcgispro-py3  
 Should you corrupt a Conda virtual environment, it is possible to delete it and recreate it from a known starting point. Please refer to https://conda.io/docs/user-guide/tasks/manage-environments.html for more information. In a worst-case scenario, it is also possible to manually delete all files and shortcuts created by the user-space installation, and start the installation procedure completely afresh.
+
+There is also a PDF Conda Cheat Sheet at https://conda.io/docs/_downloads/conda-cheatsheet.pdf which might be of use.
 
 # Contacts and Acknowledgments
 To provide feedback or obtain further information on this repo, please contact Alex Ip of Geoscience Australia (alex.ip@ga.gov.au / +61 2 6249 9517).
