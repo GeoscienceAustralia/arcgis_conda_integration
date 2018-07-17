@@ -24,7 +24,7 @@
     set environment_name=arc105_32bit
 
 : Attempt to delete any pre-existing environment with this name
-	call conda env remove --yes --name %environment_name%
+    call conda env remove --yes --name %environment_name%
 
 : Create Anaconda virtual environment for ArcGIS Desktop integration:
     call conda create --yes --name %environment_name% python=2.7.12 numpy=1.11.2 matplotlib=1.5.3 scipy=0.17.0 spyder jupyter

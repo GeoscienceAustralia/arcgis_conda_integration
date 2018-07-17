@@ -24,7 +24,7 @@
     set environment_name=arcgispro-py3
 
 : Attempt to delete any pre-existing environment with this name
-	call conda env remove --yes --name %environment_name%
+    call conda env remove --yes --name %environment_name%
 
 : Create Anaconda virtual environment for ArcGIS Desktop integration:
     call conda create --yes --name %environment_name% python=3.6.6 numpy=1.13.3 matplotlib=2.0.2 scipy=0.19.1 spyder jupyter
