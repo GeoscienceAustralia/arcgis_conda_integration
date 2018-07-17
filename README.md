@@ -29,8 +29,8 @@ Note that if you are prompted for administrative access, You can either accept t
 If you have any issues updating Conda due to proxy issues, you may need to explicitly configure your proxy in the .condarc file in your user directory (e.g. C:\Users\%USERNAME\.condarc). For GA, you may need to make sure the following section appears in that file:
 
 	proxy_servers:
-	http: http://proxy.ga.gov.au:8080
-	https: https://proxy.ga.gov.au:8080
+	    http: http://proxy.ga.gov.au:8080
+	    https: https://proxy.ga.gov.au:8080
 Please see https://conda.io/docs/user-guide/configuration/use-condarc.html#config-proxy for further information. 
 
 To use the ArcGIS-compatible virtual environment, you can use the versions of Spyder and/or Jupyter installed in the virtual environment by using the shortcuts in the start menu. Alternatively, you can start the "Anaconda Prompt" for the relevant Python, and then type "activate arc105_32bit" for ArcMap 105 / Python 2.7, or "activate arcgispro-py3" for ArcGIS Pro / Python 3.6. You can then start Python, Jupyter or anything else in the virtual environment from that command prompt.
@@ -41,11 +41,9 @@ Should you wish to test different versions of packages, it is possible to clone 
 For ArcMap 105 / Python 2.7:
 
 	conda create --name myclone --clone arc105_32bit 
-	
 For ArcGIS Pro / Python 3.6:
 
 	conda create --name myclone --clone arcgispro-py3  
-
 Should you corrupt a Conda virtual environment, it is possible to delete it and recreate it from a known starting point. Please refer to https://conda.io/docs/user-guide/tasks/manage-environments.html for more information. In a worst-case scenario, it is also possible to manually delete all files and shortcuts created by the user-space installation, and start the installation procedure completely afresh.
 
 # Contacts and Acknowledgments
