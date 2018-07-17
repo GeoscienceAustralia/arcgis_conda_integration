@@ -45,4 +45,4 @@
     mkdir C:\Users\%username%\AppData\Roaming\Python
     mkdir C:\Users\%username%\AppData\Roaming\Python\Python36
     mkdir C:\Users\%username%\AppData\Roaming\Python\Python36\site-packages
-    copy usercustomize.py C:\Users\%username%\AppData\Roaming\Python\Python36\site-packages
+    copy /Y usercustomize.py C:\Users\%username%\AppData\Roaming\Python\Python36\site-packages
