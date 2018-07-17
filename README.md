@@ -26,6 +26,13 @@ After you have installed the required version(s) of Anaconda, download or clone 
 
 Note that if you are prompted for administrative access, You can either accept this if you have access to an administrator account, or just click "Cancel" - this is caused by some packages trying (erroneously) to write to the shared startup menu, and will not affect the actual installations or updates. Once the script has completed, you should be able to start the Anaconda Python, and enter "import arcpy" without error. We may include a work-around to create the missing user start-menu icons at a later date.
 
+If you have any issues updating Conda due to proxy issues, you may need to explicitly configure your proxy in the .condarc file in your user directory (e.g. C:\Users\%USERNAME\.condarc). For GA, you may need to make sure the following section appears in that file:
+
+	proxy_servers:
+	http: http://proxy.ga.gov.au:8080
+	https: https://proxy.ga.gov.au:8080
+Please see https://conda.io/docs/user-guide/configuration/use-condarc.html#config-proxy for further information. 
+
 To use the ArcGIS-compatible virtual environment, you can use the versions of Spyder and/or Jupyter installed in the virtual environment by using the shortcuts in the start menu. Alternatively, you can start the "Anaconda Prompt" for the relevant Python, and then type "activate arc105_32bit" for ArcMap 105 / Python 2.7, or "activate arcgispro-py3" for ArcGIS Pro / Python 3.6. You can then start Python, Jupyter or anything else in the virtual environment from that command prompt.
 
 # Creating your own Virtual Environments / Recovery
