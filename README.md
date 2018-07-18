@@ -49,5 +49,5 @@ Should you corrupt a Conda virtual environment, it is possible to delete it and 
 # Contacts and Acknowledgments
 To provide feedback or obtain further information on this repo, please contact Alex Ip of Geoscience Australia (alex.ip@ga.gov.au / +61 2 6249 9517).
 
-The version of usercustomize.py in this repo was functionally based on a script written by Curtis Price of USGS (cprice@usgs.gov).
-This usercustomize.py script was written by Alex Ip of Geoscience Australia, based on an augmented version by Duncan Moore, also of GA.
+The version of usercustomize.py in this repo was functionally based on an original script written by Curtis Price of USGS (cprice@usgs.gov).
+This usercustomize.py script was written by Alex Ip of Geoscience Australia, based on an augmented version of Curtis Price's script by by Duncan Moore, also of GA.
