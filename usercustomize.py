@@ -51,15 +51,13 @@ DEBUG = False
 # Set this to handle possible version incompatibilities
 PACKAGE_CHECK_ACTION = 'warn' # Can be 'ignore', 'warn' or 'abort'
 
-# Root directory of ArcGIS Python installation
+# Root directory of ArcGIS Desktop Python installation
+# ArcGIS Pro Python root will be found relative to registry entry
 ARCGIS_DESKTOP_PYTHON_ROOT = 'C:\\Python27' 
-
-# Default environment prefix for ArcGIS Pro
-ARCGIS_PRO_DEFAULT_ENVIRONMENT = 'arcgispro-py3' 
 
 # Anaconda configuration by Python version and bit width
 CONDA_CONFIG = {(2, 32): {'installation_root': 'C:\\Users\\%USERNAME%\\AppData\\Local\\Continuum\\Anaconda2',
-                          'default_environment': 'arc105_32bit',
+                          'default_environment': 'arc105_32bit', # Default Conda environment to add to ArcGIS Python
                           'required_package_versions': {'python': '2.7.12',
                                                         'numpy': '1.11.2',
                                                         'matplotlib': '1.5.3',
@@ -67,7 +65,7 @@ CONDA_CONFIG = {(2, 32): {'installation_root': 'C:\\Users\\%USERNAME%\\AppData\\
                                                         }
                           },
                 (3, 64): {'installation_root': 'C:\\Users\\%USERNAME%\\AppData\\Local\\Continuum\\Anaconda3',
-                          'default_environment': 'arcgispro-py3',
+                          'default_environment': 'arcgispro-py3', # Default Conda environment to add to ArcGIS Python
                           'required_package_versions': {'python': '3.6.6',
                                                         'numpy': '1.13.3',
                                                         'matplotlib': '2.0.2',
@@ -194,7 +192,11 @@ def usercustomise():
     #  'CONDA_PROMPT_MODIFIER': '(_arc105_32bit) ',
     #  'CONDA_PYTHON_EXE': 'C:\\anaconda2_32bit\\python.exe',
     #===========================================================================
-
+    conda_default_env = os.environ.get("CONDA_DEFAULT_ENV")
+    if conda_default_env == 'base':
+        logger.debug('Conda base environment not modified for ArcGIS')
+        sys.exit()
+        
     username = os.environ.get('USERNAME')
     
     # Check version of Python
@@ -259,7 +261,7 @@ def usercustomise():
         
         conda_default_prefix = os.path.join(arcgis_python_dir,
                                             'envs',
-                                            ARCGIS_PRO_DEFAULT_ENVIRONMENT
+                                            CONDA_CONFIG[(python_major_version, python_bits)]['default_environment']
                                             )
                 
         if is_arcgis_python: # ArcGIS invocation - use actual Conda prefix
@@ -283,8 +285,8 @@ def usercustomise():
         
         logger.info('Conda Python customised with libs from {}'.format(arcgis_name))
         
-    # ArcGIS non-Conda invocation - append default Conda lib
-    elif is_arcgis_python: # ArcGIS Desktop (non-Conda) invocation - append default Conda lib
+    # ArcGIS non-Conda invocation - append default Conda environment libs
+    elif is_arcgis_python:
         conda_site_packages_dir = os.path.join(conda_default_prefix, "Lib\\site-packages")
         logger.debug('conda_site_packages_dir: {}'.format(conda_site_packages_dir))
         if not os.path.isdir(conda_site_packages_dir):
