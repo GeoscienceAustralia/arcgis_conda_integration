@@ -26,7 +26,11 @@ After you have installed the required version(s) of Anaconda, download or clone 
 
 Note that if you are prompted for administrative access, You can either accept this if you have access to an administrator account, or just click "Cancel" - this is caused by some packages trying (erroneously) to write to the shared startup menu, and will not affect the actual installations or updates. Once the script has completed, you should be able to start the Anaconda Python, and enter "import arcpy" without error. We may include a work-around to create the missing user start-menu icons at a later date.
 
-If you have any issues updating Conda due to proxy issues, you may need to explicitly configure your proxy in the .condarc file in your user directory (e.g. C:\Users\%USERNAME\.condarc). For GA, you may need to make sure the following section appears in that file:
+If you have any issues updating Conda due to proxy issues, you may need to explicitly configure your proxy in the .condarc file in your user directory (e.g. C:\Users\%USERNAME\.condarc). 
+
+If you do not have a .condarc file in your user directory you can create one by entering the command "conda config --write-default" using the Anaconda Prompt.
+
+For GA, you may need to make sure the following section appears in that file:
 
 	proxy_servers:
 	    http: http://proxy.ga.gov.au:8080
