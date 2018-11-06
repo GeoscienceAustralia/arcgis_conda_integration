@@ -24,7 +24,7 @@ After you have installed the required version(s) of Anaconda, download or clone 
 - create a virtual environment with specific package versions for ArcGIS compatibility
 - copy the usercustomize.py script to C:\Users\%username%\AppData\Roaming\Python\Python36\site-packages
 
-Note that if you are prompted for administrative access, You can either accept this if you have access to an administrator account, or just click "Cancel" - this is caused by some packages trying (erroneously) to write to the shared startup menu, and will not affect the actual installations or updates. Once the script has completed, you should be able to start the Anaconda Python, and enter "import arcpy" without error. We may include a work-around to create the missing user start-menu icons at a later date.
+Note that if you are prompted for administrative access, you can either accept this if you have access to an administrator account, or just click "Cancel" - this is caused by some packages trying (erroneously) to write to the shared startup menu, and will not affect the actual installations or updates. Once the script has completed, you should be able to start the Anaconda Python, and enter "import arcpy" without error. We may include a work-around to create the missing user start-menu icons at a later date.
 
 If you have any issues updating Conda due to proxy issues, you may need to explicitly configure your proxy in the .condarc file in your user directory (e.g. C:\Users\%USERNAME\.condarc). 
 
@@ -48,6 +48,8 @@ For ArcMap 105 / Python 2.7:
 For ArcGIS Pro / Python 3.6:
 
 	conda create --name myclone --clone arcgispro-py3  
+Note that if you wish to use the libraries in your cloned environment from within ArcGIS, you will need to manually edit the 'default_environment' value in the CONDA_CONFIG variable in the file C:\Users\%username%\AppData\Roaming\Python\Python<27|36>\site-packages\usercustomize.py. This is because the usercustomize script can only integrate a single virtual environment.
+
 Should you corrupt a Conda virtual environment, it is possible to delete it and recreate it from a known starting point. Please refer to https://conda.io/docs/user-guide/tasks/manage-environments.html for more information. In a worst-case scenario, it is also possible to manually delete all files and shortcuts created by the user-space installation, and start the installation procedure completely afresh.
 
 There is also a PDF Conda Cheat Sheet at https://conda.io/docs/_downloads/conda-cheatsheet.pdf which might be of use.
