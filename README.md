@@ -10,7 +10,7 @@ Note that the versions of packages installed by the batch files in this repo mos
 # Installation
 The following instructions assume that there are no instances of Python installed other than the ones bundled with ArcGIS. Please uninstall PythonXY or any other Python distributions you may have installed before commencing the Anaconda installation.
 
-Please perform the required installation(s) for your version(s) of ArcGIS, selecting the "Just Me" option to install in user-space (i.e. without requiring administrative privileges), and accept all other default options except the "Set as default Python 2/3", which will make it easier for you to install and use other IDEs such as Eclipse or PyCharm.
+Please perform the required installation(s) for your version(s) of ArcGIS, selecting the "Just Me" option to install in user-space (i.e. without requiring administrative privileges), and accept all other default options except the "Set as default Python 2/3". N.B: DO NOT CHECK THE "Set as default Python 2/3" OPTION - CHECKING IT WILL CAUSE THE ARCGIS INTEGRATION TO FAIL.
 
 ArcMap 10.5 requires a user-space installation of the 32-bit version of Anaconda Python 2 (https://repo.anaconda.com/archive/Anaconda2-5.2.0-Windows-x86.exe). N.B: DO NOT INSTALL THE 64-BIT VERSION OF PYTHON 2 UNLESS ABSOLUTELY NECESSARY, AND THEN ONLY AFTER READING THE NOTE BELOW.
 
