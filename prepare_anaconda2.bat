@@ -8,11 +8,7 @@
     call conda update --yes --all
 
 : Perform the following "conda install" for generally useful packages to install them into base environment:
-
-    call conda install --yes GDAL PyProj Shapely cx_Oracle netcdf4 owslib xarray cartopy pandas pyparsing xlrd xlwt 
-
-: Manually create new iPython kernel spec for base environment
-:    python -m ipykernel install --user --name base --display-name "Python 2.7 (base)" 
+:    call conda install --yes GDAL PyProj Shapely cx_Oracle netcdf4 owslib xarray cartopy pandas pyparsing xlrd xlwt 
 
 : Modify the following line for different Anaconda2 installation directory
     set anaconda_dir=C:\Users\%username%\AppData\Local\Continuum\anaconda2
@@ -21,25 +17,19 @@
 : Setup ArcGIS Desktop Integration
 
 : Setup new environment name - MODIFY THIS FOR DIFFERENT ENVIRONMENT NAME
-    set environment_name=arc105_32bit
+    set environment_name=arc106_32bit
 
 : Attempt to delete any pre-existing environment with this name
     call conda env remove --yes --name %environment_name%
 
 : Create Anaconda virtual environment for ArcGIS Desktop integration:
-    call conda create --yes --name %environment_name% python=2.7.12 numpy=1.11.2 matplotlib=1.5.3 scipy=0.17.0 spyder jupyter
+    call conda create --yes --name %environment_name% cycler=0.10.0 mpmath=0.19 nose=1.3.7 numpy=1.9.3 python=2.7.14 six=1.10.0 spyder jupyter
 
 : Activate the newly-created environment:
     call activate %environment_name%
 
 : Pin versions of specific packages to closely match ArcGIS Desktop Python versions
-    (echo python ==2.7.12 & echo numpy ==1.11.2 & echo matplotlib ==1.5.3 & echo scipy ==0.17.0) > %CONDA_PREFIX%\conda-meta\pinned
-
-: Install ipykernel into new environment for environment-specific Jupyter notebook kernel
-:    call conda install ipykernel --no-deps
-
-: Manually create new iPython kernel spec for new environment
-:    python -m ipykernel install --user --name %environment_name% --display-name "Python 2.7 (%environment_name%)" 
+    copy /Y argis_desktop_pinned.txt %CONDA_PREFIX%\conda-meta\pinned
 
 : Setup script to modify Python search paths
     mkdir C:\Users\%username%\AppData\Roaming\Python
