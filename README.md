@@ -1,11 +1,38 @@
 # arcgis_conda_integration
-This arcgis_conda_integration repo contains batch files and a Python script to link parallel user-space Anaconda Python installations with either 32-bit ArcMap 10.5 or 64-bit ArcGIS Pro.
+This arcgis_conda_integration repo contains batch files and a Python script to link parallel user-space Anaconda Python installations with either 32-bit ArcMap or 64-bit ArcGIS Pro.
 
 Modification of the Python installations bundled with ArcGIS is potentially dangerous, in that updates to module versions could break ArcPy, sometimes requiring a full rebuild of the user environment. For this reason, the Python bundled with a packaged installation of ArcGIS  is usually locked-down and not able to be be extended or modified by users without administrative privileges. A solution is to create a parallel installation of Anaconda Python in user-space, with package versions the same or close to the versions shipped with ArcGIS, and manage the search lists to allow Conda to access ArcGIS libraries and vice versa.
 
 The usercustomise.py script in this repo will append the Anaconda Python libraries from a Conda virtual environment to the search paths for ArcGIS Python when Python is invoked from ArcGIS, or, conversely, it will append the ArcGIS Python libraries from ArcGIS Python to the search paths for Anaconda when Python is invoked from Anaconda. This allows users to install and update packages more-or-less at will, and provides a safe way to test new packages in Conda virtual environments.
 
-Note that the versions of packages installed by the batch files in this repo most closely match the ArcGIS versions as at July 16, 2018.
+
+# Revisions
+
+| Date       | Author     | Comment                               |
+|------------|------------|---------------------------------------|
+| 25/11/2020 | R. Coghlan | Added new batch script for ArcPro 2.4, Updated readme.md to include python module updates |
+
+
+
+# ArcGIS/ArcPro version updates
+
+The batch files supplied in this repo can be updated to work on various version of ArcGIS/ArcPro.  To do so, a list of module dependcies must be extracted from the Arc version you are using and then the batch file copied/updated to reference these new versions.
+To generate a list of python modules, in the python window in either ArcMap or ArcPro paste the following;
+
+	import pkg_resources
+	installed_packages = pkg_resources.working_set
+	installed_packages_list = sorted(["%s=%s" % (i.key, i.version) for i in installed_packages])
+	print(" ".join(installed_packages_list))
+
+The returned string can be copied into either a new or existing batch script and will replace the existing package list. 
+
+The python version will also have to be updated in the batch script, and can be obtained by typing the following within the python window in either ArcMap or ArcPro;
+
+	import sys
+	print (sys.version)
+	
+The python version info should then be updated in the batch script where you find the following text, noting the version may be different; python=3.6.8 
+
 
 # Installation
 The following instructions assume that there are no instances of Python installed other than the ones bundled with ArcGIS. Please uninstall PythonXY or any other Python distributions you may have installed before commencing the Anaconda installation.
@@ -55,7 +82,7 @@ Should you corrupt a Conda virtual environment, it is possible to delete it and 
 There is also a PDF Conda Cheat Sheet at https://conda.io/docs/_downloads/conda-cheatsheet.pdf which might be of use.
 
 # Contacts and Acknowledgments
-To provide feedback or obtain further information on this repo, please contact Alex Ip of Geoscience Australia (alex.ip@ga.gov.au / +61 2 6249 9517).
+To provide feedback or obtain further information on this repo, please contact the eGIS team at Geoscience Australia (egis@ga.gov.au).
 
 The version of usercustomize.py in this repo was functionally based on an original script written by Curtis Price of USGS (cprice@usgs.gov).
-This usercustomize.py script was written by Alex Ip of Geoscience Australia, based on an augmented version of Curtis Price's script by by Duncan Moore, also of GA.
+This usercustomize.py script was written by Alex Ip of Geoscience Australia, based on an augmented version of Curtis Price's script by Duncan Moore, also of GA.
